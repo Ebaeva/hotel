@@ -46,7 +46,6 @@ public class UpdateRoomOperationProcessor extends BaseOperationProcessor impleme
 //                            .roomPrice(input.getPrice())
 //                            .roomNumber(input.getRoomN())
 //                            .roomFloor(input.getFloor())
-//                            //TODO Validation for BathroomType
 //                            .roomBathroomType(BathroomTypes.getByCode(input.getBathroomType()))
 //                            .bedSizes(mapBedsFromStrings(input.getBedSize()))
 //                            .build();

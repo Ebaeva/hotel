@@ -7,7 +7,8 @@ import lombok.Getter;
 import java.util.Arrays;
 
 
-public enum Beds {
+@Getter
+public enum BedSizes {
     SINGLE("single", 1),
     SMALL_DOUBLE("smallDouble", 2),
     DOUBLE("double", 2),
@@ -15,12 +16,10 @@ public enum Beds {
     KING_SIZE("kingSize", 3),
     UNKNOWN("", 0);
 
-    @Getter
     private final String code;
-    @Getter
     private final Integer size;
 
-    Beds(String name, Integer size) {
+    BedSizes(String name, Integer size) {
         this.code = name;
         this.size = size;
     }
@@ -35,8 +34,8 @@ public enum Beds {
     public Integer getCapacity(){return size;}
 
     @JsonCreator
-    public static Beds getByCode(String name) {
-        return Arrays.stream(Beds.values())
+    public static BedSizes getByCode(String name) {
+        return Arrays.stream(BedSizes.values())
                 .filter(bedType -> bedType.code.equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(UNKNOWN);

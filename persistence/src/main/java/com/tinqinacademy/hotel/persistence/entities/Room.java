@@ -40,6 +40,6 @@ public class Room {
     private LocalDateTime createdOn;
 
     @UpdateTimestamp
-    @Column(name = "updated_on")
+    @Column(name = "updated_on", updatable = false)
     private LocalDateTime updatedOn;
 }

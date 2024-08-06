@@ -1,7 +1,7 @@
 package com.tinqinacademy.hotel.persistence.config;
 
 import com.tinqinacademy.hotel.persistence.entities.Bed;
-import com.tinqinacademy.hotel.persistence.enums.Beds;
+import com.tinqinacademy.hotel.persistence.enums.BedSizes;
 import com.tinqinacademy.hotel.persistence.repository.BedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -24,12 +24,12 @@ public class BedSizesInitialization implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         List<Bed> beds = bedRepository.findAll();
 
-        List<Beds> databaseBeds = beds.stream()
+        List<BedSizes> databaseBeds = beds.stream()
                 .map(Bed::getType)
                 .toList();
-        List<Beds> applicationBeds = Arrays.stream(Beds.values()).toList();
+        List<BedSizes> applicationBeds = Arrays.stream(BedSizes.values()).toList();
 
-        List<Beds> differenceToBeAddedInDB = applicationBeds.stream()
+        List<BedSizes> differenceToBeAddedInDB = applicationBeds.stream()
                 .filter(bedSize -> !databaseBeds.contains(bedSize))
                 .toList();
 

@@ -18,7 +18,6 @@ public class ErrorMapperService<E extends OperationError> implements ErrorMapper
     public Errors mapErrors(Throwable throwable) {
         List<OperationError> OpErrors = new ArrayList<>();
 
-
         if (throwable instanceof BaseException) {
 
             BaseException baseException = (BaseException) throwable;

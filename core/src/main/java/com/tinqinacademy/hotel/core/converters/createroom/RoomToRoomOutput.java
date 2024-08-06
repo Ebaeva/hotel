@@ -1,18 +1,28 @@
 package com.tinqinacademy.hotel.core.converters.createroom;
 
-import com.tinqinacademy.hotel.api.operation.createroom.CreateRoomOutput;
+import com.tinqinacademy.hotel.api.models.outputs.RoomOutput;
+import com.tinqinacademy.hotel.persistence.entities.Bed;
 import com.tinqinacademy.hotel.persistence.entities.Room;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoomToRoomOutput implements Converter<Room, CreateRoomOutput> {
+public class RoomToRoomOutput implements Converter<Room, RoomOutput> {
 
     @Override
-    public CreateRoomOutput convert(Room source) {
-        return CreateRoomOutput
+    public com.tinqinacademy.hotel.api.models.outputs.RoomOutput convert(Room source) {
+        return RoomOutput
                 .builder()
-                .id(source.getId())
+                .bathroomTypes(source.getRoomBathroomType().toString())
+                .beds(source
+                        .getBedSizes()
+                        .stream()
+                        .map(Bed::toString)
+                        .toList())
+                .floor(source.getRoomFloor())
+                //.id(source.getId())
+                .price(source.getRoomPrice())
+                .number(source.getRoomNumber())
                 .build();
     }
 }

@@ -9,7 +9,7 @@ import com.tinqinacademy.hotel.core.errorsmapper.ErrorMapper;
 import com.tinqinacademy.hotel.core.exeptions.RoomNotFoundException;
 import com.tinqinacademy.hotel.persistence.entities.Bed;
 import com.tinqinacademy.hotel.persistence.entities.Room;
-import com.tinqinacademy.hotel.persistence.enums.Beds;
+import com.tinqinacademy.hotel.persistence.enums.BedSizes;
 import com.tinqinacademy.hotel.persistence.repository.BedRepository;
 import com.tinqinacademy.hotel.persistence.repository.RoomRepository;
 import io.vavr.Predicates;
@@ -32,7 +32,7 @@ public class CreateRoomOperationProcessor extends BaseOperationProcessor impleme
     private final RoomRepository roomRepository;
 
     protected CreateRoomOperationProcessor(ConversionService conversionService, Validator validator, ErrorMapper errorMapper, BedRepository bedRepository, RoomRepository roomRepository) {
-     super(conversionService, validator, errorMapper);
+        super(conversionService, validator, errorMapper);
         this.bedRepository = bedRepository;
         this.roomRepository = roomRepository;
     }
@@ -42,7 +42,9 @@ public class CreateRoomOperationProcessor extends BaseOperationProcessor impleme
         return Try.of(() -> {
                     log.info("Start createRoom input: {}", input.toString());
 
+
                     List<Bed> bedsFinal = mapBedsFromStrings(input.getBeds());
+
 
                     Room save = conversionService.convert(input, Room.RoomBuilder.class)
                             .bedSizes(bedsFinal)
@@ -68,11 +70,10 @@ public class CreateRoomOperationProcessor extends BaseOperationProcessor impleme
                 ? null
                 : bedStrings
                 .stream()
-                .map(Beds::getByCode)
+                .map(BedSizes::getByCode)
                 .map(bedRepository::findByType)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
     }
 }
-

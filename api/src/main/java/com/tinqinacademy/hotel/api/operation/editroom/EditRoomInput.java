@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,16 +19,16 @@ import java.util.List;
 public class EditRoomInput implements OperationInput {
 
     @JsonIgnore
-    private String id;
+    private UUID id;
 
-    private List<String> bedSize;
+    private List<String> bedSizes;
 
     @Size(max = 7, message = "invalid bathroom type")
     private String bathroomType;
 
     private Integer floor;
 
-    private String roomNo;
+    private String roomN;
 
     @Digits(integer = 4, fraction = 2, message = "invalid price")
     private BigDecimal price;

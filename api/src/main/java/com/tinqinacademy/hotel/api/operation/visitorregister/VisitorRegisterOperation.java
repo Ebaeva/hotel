@@ -1,4 +1,6 @@
 package com.tinqinacademy.hotel.api.operation.visitorregister;
 
-//public interface VisitorRegisterOperation extends OperationProcessor<VisitorRegisterOutput, VisitorRegisterInput> {
-//}
+import com.tinqinacademy.hotel.api.base.interfaces.OperationProcessor;
+
+public interface VisitorRegisterOperation extends OperationProcessor<VisitorRegisterOutput, VisitorRegisterInput> {
+}

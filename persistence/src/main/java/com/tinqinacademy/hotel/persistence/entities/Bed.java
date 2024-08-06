@@ -1,6 +1,6 @@
 package com.tinqinacademy.hotel.persistence.entities;
 
-import com.tinqinacademy.hotel.persistence.enums.Beds;
+import com.tinqinacademy.hotel.persistence.enums.BedSizes;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,7 +23,7 @@ public class Bed {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    private Beds type;
+    private BedSizes type;
 
     private Integer capacity;
 

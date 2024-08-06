@@ -1,14 +1,20 @@
 package com.tinqinacademy.hotel.api.operation.visitorregister;
 
-//@Getter
-//@Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@Builder
-//@ToString
-//public class VisitorRegisterInput implements OperationInput {
+import com.tinqinacademy.hotel.api.base.interfaces.OperationInput;
+import com.tinqinacademy.hotel.api.models.inputs.GuestInput;
+import lombok.*;
 
-    //List<GuestInput> guests;
+import java.util.List;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
+public class VisitorRegisterInput implements OperationInput {
+
+    List<GuestInput> guests;
 
 //    private LocalDate startDate;
 //
@@ -33,4 +39,4 @@ package com.tinqinacademy.hotel.api.operation.visitorregister;
 //
 //    private LocalDate birthDate;
 
-//}
+}

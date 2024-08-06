@@ -7,9 +7,15 @@ import com.tinqinacademy.hotel.api.operation.deleteroom.DeleteRoomInput;
 import com.tinqinacademy.hotel.api.operation.deleteroom.DeleteRoomOutput;
 import com.tinqinacademy.hotel.api.operation.updateroom.UpdateRoomInput;
 import com.tinqinacademy.hotel.api.operation.updateroom.UpdateRoomOutput;
+import com.tinqinacademy.hotel.api.operation.visitorregister.VisitorRegisterInput;
+import com.tinqinacademy.hotel.api.operation.visitorregister.VisitorRegisterOutput;
+import com.tinqinacademy.hotel.core.operation.AddGuestsOperationProcessor;
 import com.tinqinacademy.hotel.core.operation.CreateRoomOperationProcessor;
 import com.tinqinacademy.hotel.core.operation.DeleteRoomOperationProcessor;
 import com.tinqinacademy.hotel.core.operation.UpdateRoomOperationProcessor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.vavr.control.Either;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +26,15 @@ public class AdminController extends BaseController {
     private final DeleteRoomOperationProcessor deleteRoomOperationProcessor;
     private final CreateRoomOperationProcessor createRoomOperationProcessor;
     private final UpdateRoomOperationProcessor updateRoomOperationProcessor;
+    private final AddGuestsOperationProcessor addGuestsOperationProcessor;
 
-    public AdminController(DeleteRoomOperationProcessor deleteRoomOperationProcessor, CreateRoomOperationProcessor createRoomOperationProcessor, UpdateRoomOperationProcessor updateRoomOperationProcessor) {
+
+    public AdminController(DeleteRoomOperationProcessor deleteRoomOperationProcessor, CreateRoomOperationProcessor createRoomOperationProcessor, UpdateRoomOperationProcessor updateRoomOperationProcessor, AddGuestsOperationProcessor addGuestsOperationProcessor) {
         super();
         this.deleteRoomOperationProcessor = deleteRoomOperationProcessor;
         this.createRoomOperationProcessor = createRoomOperationProcessor;
         this.updateRoomOperationProcessor = updateRoomOperationProcessor;
+        this.addGuestsOperationProcessor = addGuestsOperationProcessor;
     }
     //private final AdminService adminService;
 
@@ -34,7 +43,7 @@ public class AdminController extends BaseController {
 //    }
     //private final CreateRoomOperationProcessor createRoomOperationProcessor;
 
-//    @Autowired
+    //    @Autowired
 //    public AdminController(AdminService adminService, CreateRoomOperationProcessor createRoomOperationProcessor) {
 //        this.adminService = adminService;
 //        this.createRoomOperationProcessor = createRoomOperationProcessor;
@@ -45,6 +54,20 @@ public class AdminController extends BaseController {
 //    public void registerVisitor(@RequestBody VisitorRegisterInput visitorRegisterInput) {
 //        this.adminService.registerVisitor(visitorRegisterInput);
 //    }
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Room not found")
+    })
+    @Operation(
+            summary = "returns a report based on input",
+            description = "Implemented options:"
+    )
+    @PostMapping(URLMappings.POST_REGISTER_VISITOR)
+    public ResponseEntity<?> registerVisitors(@RequestBody VisitorRegisterInput input) {
+        Either<Errors, VisitorRegisterOutput> result = addGuestsOperationProcessor.process(input);
+
+        return handleResult(result);
+    }
 //
 //    @GetMapping(GET_REPORT)
 //    public ResponseEntity<VisitorRegisterReportOutput> visitorRegisterReport(VisitorRegisterReportInput visitorRegisterReportInput) {
@@ -62,12 +85,11 @@ public class AdminController extends BaseController {
 //        return new ResponseEntity<>(createRoomOutput, HttpStatus.CREATED);
 //    }
 
-@PostMapping(URLMappings.POST_CREATE_ROOM)
-public ResponseEntity<?> createRoom(@RequestBody CreateRoomInput input) {
-    Either<Errors, CreateRoomOutput> result = createRoomOperationProcessor.process(input);
-    return handleResult(result);
-}
-
+    @PostMapping(URLMappings.POST_CREATE_ROOM)
+    public ResponseEntity<?> createRoom(@RequestBody CreateRoomInput input) {
+        Either<Errors, CreateRoomOutput> result = createRoomOperationProcessor.process(input);
+        return handleResult(result);
+    }
 
 //    @PutMapping(PUT_UPDATE_ROOM_BY_ID)
 //    public ResponseEntity<EditRoomOutput> editRoom(@RequestBody EditRoomInput editRoomInput, @PathVariable String roomId) {
@@ -79,18 +101,18 @@ public ResponseEntity<?> createRoom(@RequestBody CreateRoomInput input) {
 //       // throw new RoomNumberNotExist(String.format("Room with number {} not exist! ", editRoomInput.getRoomNo()));
 //    }
 
-//    @PatchMapping(PATCH_EDIT_ROOM)
+    //    @PatchMapping(PATCH_EDIT_ROOM)
 //    public ResponseEntity<EditRoomOutput> editRoom(@PathVariable EditRoomInput editRoomInput, @Valid @RequestBody String roomId) {
 //        // editRoomInput.setId(roomId);
 //        EditRoomOutput editRoomOutput = this.adminService.editRoom(editRoomInput);
 //        return new ResponseEntity<>(editRoomOutput, HttpStatus.OK);
 //    }
-@PatchMapping(URLMappings.PATCH_EDIT_ROOM)
-public ResponseEntity<?> editRoom(@RequestBody UpdateRoomInput input, @PathVariable String roomId) {
-    input.setId(roomId);
-    Either<Errors, UpdateRoomOutput> result = updateRoomOperationProcessor.process(input);
-    return handleResult(result);
-}
+    @PatchMapping(URLMappings.PATCH_EDIT_ROOM)
+    public ResponseEntity<?> editRoom(@RequestBody UpdateRoomInput input, @PathVariable String roomId) {
+        input.setId(roomId);
+        Either<Errors, UpdateRoomOutput> result = updateRoomOperationProcessor.process(input);
+        return handleResult(result);
+    }
 
     @DeleteMapping(URLMappings.DELETE_ROOM)
     public ResponseEntity<?> deleteRoom(@PathVariable String roomId) {
